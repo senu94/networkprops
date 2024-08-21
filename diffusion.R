@@ -24,17 +24,29 @@ go_terms <- names(seed_proteins)
 # get the nodes
 proteins_go <- V(g)$name
 
+# extract the proteins and shuffle
+all_proteins <- unlist(seed_proteins)
+shuffled_proteins <- sample(all_proteins)
+split_proteins <- split(shuffled_proteins, cut(seq_along(shuffled_proteins), breaks=10, labels= FALSE))
+
 # # create the empty vector
 # go_vector <- setNames(numeric(length(proteins_go)), proteins_go)
 # print(go_vector)
 
 
 for (go_term in go_terms){
-  associated_proteins <- c(seed_proteins[[go_term]])
-  go_vector <- setNames(ifelse(proteins_go %in% associated_proteins, 1, 0), proteins_go)
-  output_vec <- diffuStats::diffuse(
-    graph = g,
-    method = "raw",
-    scores = go_vector)
+  # Open a new key for the GO term
+  results_dict[[go_term]] <- list()
+  # Iterate through each portion (1 to 10)
+  for (portion in seq_along(split_proteins)) {
+    # Get the seed proteins from the remaining portions (excluding the selected portion)
+    remaining_proteins <- unlist(split_proteins[-portion])
+    seed_proteins_unselected <- intersect(go_dict[[go_term]], remaining_proteins)
+  
+    go_vector <- setNames(ifelse(proteins_go %in% seed_proteins_unselected, 1, 0), proteins_go)
+    output_vec <- diffuStats::diffuse(
+      graph = g,
+      method = "raw",
+      scores = go_vector)
   print(output_vec)
 }
