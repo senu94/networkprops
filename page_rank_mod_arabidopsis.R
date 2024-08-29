@@ -32,6 +32,7 @@ results_dict_pr_arabidopsis <- list()
 start_time <- proc.time()
 
 for (go_term in go_terms_arabidopsis){
+  print(go_term)
   # Open a new key for the GO term
   results_dict_pr_arabidopsis[[go_term]] <- list()
   
@@ -73,7 +74,7 @@ for (go_term in go_terms_arabidopsis){
 end_time <- proc.time()
 elapsed_time = end_time - start_time
 elapsed_seconds = elapsed_time["elapsed"]
-cat(sprintf(paste0('Excecution time for page rank in arabidopsis is %.2f seconds\n', elapsed_seconds)),'elapsed_time.txt', append = TRUE)
+cat(sprintf(paste0('Excecution time for page rank in arabidopsis in seconds\n', elapsed_seconds, '\n')),file = 'elapsed_time.txt', append = TRUE)
 
 # Save the dictionary as a JSON file
-write_json(results_dict, "arabidopsis_page_rank_results.json")
+write_json(results_dict_pr_arabidopsis, "arabidopsis_page_rank_results.json")

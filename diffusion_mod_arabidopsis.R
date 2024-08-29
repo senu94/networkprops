@@ -40,6 +40,7 @@ results_dict_diffml_arabidopsis <- list()
 start_time <- proc.time()
 
 for (go_term in go_terms_arabidopsis){
+  print(go_term)
   # Open a new key for the GO term
   results_dict_diffml_arabidopsis[[go_term]] <- list()
   # Iterate through each portion (1 to 10)
@@ -62,7 +63,7 @@ for (go_term in go_terms_arabidopsis){
 end_time <- proc.time()
 elapsed_time = end_time - start_time
 elapsed_seconds = elapsed_time["elapsed"]
-cat(sprintf(paste0('Excecution time for diffusion ml in arabidopsis is %.2f seconds\n', elapsed_seconds)),'elapsed_time.txt', append = TRUE)
+cat(sprintf(paste0('Excecution time for diffusion ml in arabidopsis in seconds\n', elapsed_seconds)),file = 'elapsed_time.txt', append = TRUE)
 
 # Save the dictionary as a JSON file
 write_json(results_dict_diffml_arabidopsis, "arabidopsis_diffml_results.json")
